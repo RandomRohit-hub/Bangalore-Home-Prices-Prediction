@@ -12,7 +12,12 @@ This system allows users to input home features and get a predicted price for pr
 It consists of three main components:
 1. **Client** – User interface to input data and display predictions.
 2. **Server** – Flask-based backend API that processes requests and interacts with the ML model.
-3. **Model** – Pre-trained Scikit-learn regression model for predicting home prices.
+3. **Model** – Pre-trained Scikit-learn regression model for predicting home prices, now with improved analysis.
+
+### ✨ Recent Improvements
+- **Exploratory Data Analysis (EDA)**: Added comprehensive data visualization (Histograms, Scatter Plots) to understand price distributions and correlations.
+- **Advanced Model Selection**: Integrated **Random Forest** and **Gradient Boosting** regressors alongside Linear Regression to experiment with better accuracy.
+- **Improved File Structure**: Organized datasets into a dedicated directory for better project management.
 
 ---
 
@@ -20,11 +25,27 @@ It consists of three main components:
 
 ```
 Bangalore Home Prices/
-├── client/             # Frontend files (HTML, CSS, JS)
-├── server/             # Flask server code
-├── model/              # Trained ML model and preprocessing code
-├── requirements.txt    # Python dependencies
-├── README.md           # Project documentation
+├── client/                 # Frontend files
+│   ├── app.html           # Main UI
+│   ├── app.css
+│   └── app.js
+│
+├── server/                 # Flask server code
+│   ├── app.py             # Main application entry point
+│   ├── util.py            # Utility functions (loads model, predicts)
+│   └── artifacts/         # Serialized model and column data
+│       ├── banglore_home_prices_model.pickle
+│       └── columns.json
+│
+├── model/                  # Machine Learning environment
+│   ├── datasets/          # Raw and processed data
+│   │   ├── Bengaluru_House_Data.csv
+│   │   └── bhp.csv
+│   ├── Bangalore Home Price Prediction.ipynb          # Original notebook
+│   └── Bangalore_Home_Price_Prediction_Improved.ipynb # Improved notebook with EDA & new models
+│
+├── requirements.txt        # Python dependencies
+└── README.md               # Project documentation
 ```
 
 ---
@@ -32,6 +53,8 @@ Bangalore Home Prices/
 ## 🎯 Features
 
 - Predicts home prices based on user input.
+- **New**: Visual insights into the housing data (in the improved notebook).
+- **New**: Comparison of multiple regression algorithms.
 - Easy-to-use web interface.
 - Lightweight and easy to deploy.
 - Uses a pre-trained ML model for fast predictions.
@@ -60,16 +83,16 @@ pip install -r requirements.txt
 python server/app.py
 ```
 
-5️⃣ Open `client/index.html` in your browser to use the application.
+5️⃣ Open `client/app.html` in your browser to use the application.
 
 ---
 
 ## 🔧 Technologies Used
 
-- Python  
-- Flask  
-- Scikit-learn  
-- HTML, CSS, JavaScript  
+- **Language**: Python
+- **Backend**: Flask
+- **ML Libraries**: Scikit-learn, Pandas, Numpy, Matplotlib, Seaborn
+- **Frontend**: HTML, CSS, JavaScript
 
 ---
 
