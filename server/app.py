@@ -1,8 +1,6 @@
 """
-Legacy server file - kept for backward compatibility
-For new deployments, use app.py instead
-
-This file maintains the same functionality as app.py for backward compatibility.
+Flask application for Bangalore Home Price Prediction
+Run this file to start the Flask server
 """
 from flask import Flask, request, jsonify, send_from_directory
 import os
@@ -130,3 +128,4 @@ if __name__ == "__main__":
     
     # Run the Flask app
     app.run(debug=True, host='127.0.0.1', port=5000)
+
