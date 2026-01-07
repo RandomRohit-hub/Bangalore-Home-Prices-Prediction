@@ -278,94 +278,56 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// Wavy Background Effect
-function initWavyBackground() {
-    console.log("Initializing Wavy Background");
-    var canvas = document.getElementById("wavyCanvas");
-    if (!canvas) {
-        console.error("Canvas element not found");
-        return;
+// Old wavy background code removed - using new animated gradient blobs and particles instead
+
+// Initialize animated background particles
+function initParticles() {
+    const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer) return;
+    
+    const particleCount = 50;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random initial position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        particle.style.left = x + '%';
+        particle.style.top = y + '%';
+        
+        // Random animation delay
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        
+        // Random size variation
+        const size = 2 + Math.random() * 4;
+        particle.style.width = size + 'px';
+        particle.style.height = size + 'px';
+        
+        particlesContainer.appendChild(particle);
     }
-
-    if (typeof SimplexNoise === 'undefined') {
-        console.error("SimplexNoise library not loaded");
-        return;
-    }
-
-    var ctx = canvas.getContext("2d");
-    var noise = new SimplexNoise();
-    var w, h, nt, i, x;
-
-    var config = {
-        blur: 10,
-        speed: "fast",
-        waveWidth: 50,
-        colors: [
-            "#38bdf8",
-            "#818cf8",
-            "#c084fc",
-            "#e879f9",
-            "#22d3ee"
-        ],
-        waveOpacity: 0.5,
-        backgroundFill: "black"
-    };
-
-    var getSpeed = function () {
-        return config.speed === "fast" ? 0.002 : 0.001;
-    };
-
-    var drawWave = function (n) {
-        nt += getSpeed();
-        for (i = 0; i < n; i++) {
-            ctx.beginPath();
-            ctx.lineWidth = config.waveWidth;
-            ctx.strokeStyle = config.colors[i % config.colors.length];
-            for (x = 0; x < w; x += 5) {
-                // noise3D equivalent roughly: noise.noise3D(x, y, z)
-                // 2.4.0 supports noise3D(x, y, z)
-                var y = noise.noise3D(x / 800, 0.3 * i, nt) * 100;
-                ctx.lineTo(x, y + h * 0.5);
-            }
-            ctx.stroke();
-            ctx.closePath();
-        }
-    };
-
-    var render = function () {
-        // Use simpler clearing if fillStyle causes issues with transparency
-        // For our case, we want transparent background but with waves
-        // The original React component fills with "black". 
-        // We set canvas background to transparent in CSS, so maybe we want to CLEAR it.
-        ctx.clearRect(0, 0, w, h);
-
-        // Actually, the original effect fills the background. 
-        // Let's assume we want just the waves on the dark background we set in CSS CSS.
-        // ctx.fillStyle = config.backgroundFill;
-        // ctx.globalAlpha = config.waveOpacity;
-        // ctx.fillRect(0, 0, w, h);
-
-        ctx.globalAlpha = config.waveOpacity;
-        drawWave(5);
-        requestAnimationFrame(render);
-    };
-
-    var init = function () {
-        w = ctx.canvas.width = window.innerWidth;
-        h = ctx.canvas.height = window.innerHeight;
-        ctx.filter = "blur(" + config.blur + "px)";
-        nt = 0;
-
-        window.onresize = function () {
-            w = ctx.canvas.width = window.innerWidth;
-            h = ctx.canvas.height = window.innerHeight;
-            ctx.filter = "blur(" + config.blur + "px)";
-        };
-
-        render();
-    };
-
-    init();
+    
+    // Animate particles on mouse move for interactive effect
+    let mouseX = 0;
+    let mouseY = 0;
+    const particles = particlesContainer.querySelectorAll('.particle');
+    
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX / window.innerWidth;
+        mouseY = e.clientY / window.innerHeight;
+        
+        particles.forEach((particle, index) => {
+            const speed = (index % 3 + 1) * 0.5;
+            const x = (mouseX - 0.5) * 100 * speed;
+            const y = (mouseY - 0.5) * 100 * speed;
+            
+            particle.style.transform = `translate(${x}px, ${y}px)`;
+        });
+    });
 }
 
-window.addEventListener('load', initWavyBackground);
+// Initialize particles when page loads
+window.addEventListener('load', function() {
+    initParticles();
+});
